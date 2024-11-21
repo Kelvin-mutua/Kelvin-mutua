@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management - POS System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .user-list {
+            margin-top: 20px;
+        }
+        .user-item {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .remove-button {
+            background-color: #dc3545;
+        }
+        .remove-button:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>User Management</h2>
+
+        <form id="userForm" onsubmit="return addUser ()">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" required>
+            </div>
+            <div class="form-group">
+                <label for="role">Select Role:</label>
+                <select id="role" required>
+                    <option value="">--Select Role--</option>
+                    <option value="cashier">Cashier</option>
+                    <option value="admin">Admin</option>
+                    <option value="inventory_manager">Inventory Manager</option>
+                    <option value="customer">Customer</option>
+                </select>
+            </div>
+            <button type="submit">Add User</button>
+        </form>
+
+        <div class="user-list" id="userList"></div>
+    </div>
+    <script>
+   const users = []; 
+function addUser () {
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+    const role = document.getElementById("role").value;
+
+    
+    const existingUser  = users.find(user => user.username === username);
+    if (existingUser ) {
+        alert("User  already exists!");
+        return false; // Prevent form submission
+    }
+
+    
+    const newUser  = { username, password, role };
+    users.push(newUser ); // Add user to the array
+
+   
+    document.getElementById("userForm").reset();
+
+    
+    displayUsers();
+    return false; 
+}
+
+function displayUsers() {
+    const userList = document.getElementById("userList");
+    userList.innerHTML = ''; // Clear the list
+
+    users.forEach((user, index) => {
+        const userItem = document.createElement("div");
+        userItem.className = "user-item";
+        userItem.innerHTML = `
+            <span>${user.username} - ${user.role}</span>
+            <button class="remove-button" onclick="removeUser (${index})">Remove</button>
+        `;
+        userList.appendChild(userItem);
+    });
+}
+
+function removeUser (index) {
+    
+    users.splice(index, 1);
+
+    // Refresh the user list
+    displayUsers();
+}
+</script>

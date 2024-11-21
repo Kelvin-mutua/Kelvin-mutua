@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Page - POS System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .feedback-list, .support-list {
+            margin-top: 20px;
+        }
+        .feedback-item, .support-item {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Customer Page</h2>
+<p1> Welcome you are logged in as a Customer</p1> </a>
+       
+       
+        <div id="order-section">
+            <h3>Place Order</h3>
+            <form id="orderForm" onsubmit="return placeOrder()">
+                <div class="form-group">
+                    <label for="product">Product:</label>
+                    <select id="product" required>
+                        <option value="">Select a product</option>
+                        <option value="Product 1">Product 1</option>
+                        <option value="Product 2">Product 2</option>
+                        <option value="Product 3">Product 3</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="quantity">Quantity:</label>
+                    <input type="number" id="quantity" required min="1">
+                </div>
+                <button type="submit">Place Order</button>
+                <button type="reset">Reset</button>
+            </form>
+        </div>
+
+       
+
+        <div id="payment-section" style="margin-top: 20px;">
+            <h3>Make Payment</h3>
+            <form id="paymentForm" onsubmit="return makePayment()">
+                <div class="form-group">
+                    <label for="amount">Amount:</label>
+                    <input type="number" id="amount" required step="0.01">
+                </div>
+                <button type="submit">Pay</button>
+                <button type="reset">Reset</button>
+            </form>
+        </div>
+
+        
+        <div id="feedback-section" style="margin-top: 20px;">
+            <h3>Feedback</h3>
+            <form id="feedbackForm" onsubmit="return giveFeedback()">
+                <div class="form-group">
+                    <label for="feedback">Your Feedback:</label>
+                    <textarea id="feedback" rows="4" required></textarea>
+                </div>
+                <button type="submit">Submit Feedback</button>
+                <button type="reset">Reset</button>
+            </form>
+            <div class="feedback-list" id="feedbackList"></div>
+        </div>
+
+      
+        <div id="support-section" style="margin-top: 20px;">
+            <h3>Support</h3>
+            <form id="supportForm" onsubmit="return requestSupport()">
+                <div class="form-group">
+                    <label for="supportQuery">Your Inquiry:</label>
+                    <textarea id="supportQuery" rows="4" required></textarea>
+                </div>
+                <button type="submit">Request Support</button>
+                <button type="reset">Reset</button>
+            </form>
+            <div class="support-list" id="supportList"></div>
+        </div>
+    </div>
+
+    <script>
+        function placeOrder() {
+            

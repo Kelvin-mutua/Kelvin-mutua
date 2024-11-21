@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Management System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        input, button {
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Sales Management System</h1>
+
+<h2>Add New Sale</h2>
+<input type="text" id="customerName" placeholder="Customer Name" required>
+<input type="text" id="product" placeholder="Product" required>
+<input type="number" id="quantity" placeholder="Quantity" required>
+<input type="number" id="price" placeholder="Price" required>
+<button onclick="addSale()">Add Sale</button>
+
+<h2>Sales List</h2>
+<table id="salesTable">
+    <thead>
+        <tr>
+            <th>Customer Name</th>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Sales records will be displayed here -->
+    </tbody>
+</table>
+
+<script>
+    let sales = [];
+
+    function addSale() {
+        const customerName = document.getElementById("customerName").value;
+        const product = document.getElementById("product").value;
+        const quantity = parseInt(document.getElementById("quantity").value);
+        const price = parseFloat(document.getElementById("price").value);
+
+        if (customerName && product && quantity > 0 && price >= 0) {
+            const total = quantity * price;
+            const sale = { customerName, product, quantity, price, total };
+            sales.push(sale);
+            updateSalesTable();
+            clearInputFields();
+        } else {
+            alert("Please fill in all fields correctly.");
+        }
+    }
+
+    function updateSalesTable() {
+        const tableBody = document.querySelector("#salesTable tbody");
+        tableBody.innerHTML = ""; // Clear existing rows
+
+        sales.forEach((sale, index) => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${sale.customerName}</td>
+                <td>${sale.product}</td>
+                <td>${sale.quantity}</td>
+                <td>$${sale.price.toFixed(2)}</td>
+                <td>$${sale.total.toFixed(2)}</td>
+                <td>
+                    <button onclick="removeSale(${index})">Remove</button>
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+    }
+
+    function removeSale(index) {
+        sales.splice(index, 1);
+        updateSalesTable();
+    }
+
+    function clearInputFields() {
+        document.getElementById("customerName").value = '';
+        document.getElementById("product").value = '';
+        document.getElementById("quantity").value = '';
+        document.getElementById("price").value = '';
+    }
+</script>
+
+</body>
+</html>

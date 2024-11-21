@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POS Admin Page</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        
+        header {
+            background: #007BFF;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        .button-container {
+            display: grid; /* Use grid for two columns */
+            grid-template-columns: repeat(2, 1fr); /* Two equal columns */
+            gap: 20px; /* Space between buttons */
+        }
+
+        .button {
+            background-color: #007BFF;
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background: #333;
+            color: white;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Point of Sale System - Admin Page</h1>
+    </header>
+
+    <main>
+        <div class="button-container">
+            <a class="button" href="user_management.html">User  Management</a>
+            <a class="button" href="inventory_management.html">Inventory Management</a>
+            <a class="button" href="sales_management.html">Sales Management</a>
+            <a class="button" href="reporting.html">Reporting and Analytics</a>
+            <a class="button" href="settings.html">Settings and Configuration</a>
+            <a class="button" href="customer_management.html">Customer Management</a>
+            <a class="button" href="hardware_management.html">Hardware Management</a>
+            <a class="button" href="security_features.html">Security Features</a>
+            <a class="button" href="notifications.html">Notifications and Alerts</a>
+            <a class="button" href="support.html">Support and Help</a>
+        </div>
+    </main>
+
+   
+</body>
+</html>

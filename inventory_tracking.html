@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .inventory-list {
+            margin-top: 20px;
+        }
+        .inventory-item {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Inventory Management System</h2>
+
+        <div id="add-product-section">
+            <h3>Add Product</h3>
+            <form id="productForm" onsubmit="return addProduct()">
+                <div class="form-group">
+                    <label for="productName">Product Name:</label>
+                    <input type="text" id="productName" required>
+                </div>
+                <div class="form-group">
+                    <label for="quantity">Quantity:</label>
+                    <input type="number" id="quantity" required min="1">
+                </div>
+                <button type="submit">Add Product</button>
+            </form>
+        </div>
+
+        <div class="inventory-list" id="inventoryList">
+            <h3>Current Inventory</h3>
+            <div id="inventoryItems"></div>
+        </div>
+    </div>
+
+    <script>
+        let inventory = [];
+
+        function addProduct() {
+            const productName = document.getElementById('productName').value;
+            const quantity = parseInt(document.getElementById('quantity').value);
+
+            // Check if the product already exists
+            const existingProduct = inventory.find(item => item.name === productName);
+            if (existingProduct) {
+                existingProduct.quantity += quantity; // Update the quantity
+            } else {
+                inventory.push({ name: productName, quantity }); // Add new product
+            }
+
+            // Clear the form
+            document.getElementById('productForm').reset();
+
+            // Update the inventory display
+            displayInventory();
+            return false; // Prevent form submission
+        }
+
+        function displayInventory() {
+            const inventoryItems = document.getElementById('inventoryItems');
+            inventoryItems.innerHTML = ''; // Clear existing items
+
+            inventory.forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'inventory-item';
+                itemDiv.innerHTML = `
+                    <span>${item.name}</span>
+                    <span>Quantity: ${item.quantity}</span>
+                `;
+                inventoryItems.appendChild(itemDiv);
+            });
+        }
+    </script>
+</body>
+</html>

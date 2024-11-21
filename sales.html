@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Page</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="sales-container">
+        <h2>Sales Page</h2>
+        <div class="item-input">
+            <input type="text" id="itemInput" placeholder="Scan or type QR code/item name">
+            <button id="scanBtn">Scan QR Code</button>
+            <select id="itemSelect">
+                <option value="">Select Item</option>
+                <option value="item1">Item 1</option>
+                <option value="item2">Item 2</option>
+                <!-- Add more items as needed -->
+            </select>
+            <button id="addItemBtn">Add Item</button>
+        </div>
+        <div class="sales-summary">
+            <h3>Sales Summary</h3>
+            <ul id="itemList"></ul>
+            <p>Subtotal: $<span id="subtotal">0.00</span></p>
+            <p>Tax (VAT): $<span id="tax">0.00</span></p>
+            <p>Discount: $<span id="discount">0.00</span></p>
+            <p>Total: $<span id="total">0.00</span></p>
+            <p>Customer Change: $<span id="change">0.00</span></p>
+        </div>
+        <div class="payment-section">
+            <h3>Payment</h3>
+            <select id="paymentMethod">
+                <option value="cash">Cash</option>
+                <option value="credit">Credit Card</option>
+                <option value="mobile">Mobile Payment</option>
+            </select>
+            <input type="number" id="amountReceived" placeholder="Amount Received">
+            <button id="finalizeSaleBtn">Finalize Sale</button>
+            <a class="button" href="reports.html">Go to Reporting and Analytics</a>
+        
+        </div>
+    </div>
+
+    <script>
+        
+        document.addEventListener('DOMContentLoaded', () => {
+    const itemInput = document.getElementById('itemInput');
+    const itemSelect = document.getElementById('itemSelect');
+    const addItemBtn = document.getElementById('addItemBtn');
+    const itemList = document.getElementById('itemList');
+    const subtotalElement = document.getElementById('subtotal');
+    const taxElement = document.getElementById('tax');
+    const discountElement = document.getElementById('discount');
+    const totalElement = document.getElementById('total');
+    const changeElement = document.getElementById('change');
+    const amountReceivedInput = document.getElementById('amountReceived');
+    const finalizeSaleBtn = document.getElementById('finalizeSaleBtn');
+
+    let items = [];
+    const itemPrices = {
+        item1: 10.00, // Example price for Item 1
+        item2: 15.00, // Example price for Item 2
+        // Add more items and their prices as needed
+    };
+
+    // Function to update the sales summary
+    function updateSalesSummary() {
+        let subtotal = items.reduce((total, item) => total + itemPrices[item], 0);
+        let tax = subtotal * 0.15; // Example tax rate of 15%
+        let discount = 0; // You can implement discount logic here
+        let total = subtotal + tax - discount;
+
+        subtotalElement.textContent = subtotal.toFixed(2);
+        taxElement.textContent = tax.toFixed(2);
+        discountElement.textContent = discount.toFixed(2);
+        totalElement.textContent = total.toFixed(2);
+        
+        // Reset change
+        changeElement.textContent = '0.00';
+    }
+
+    // Function to add item to the list
+    function addItem() {
+        const itemName = itemInput.value.trim() || itemSelect.value;
+        if (itemName && itemPrices[itemName]) {
+            items.push(itemName);
+            const li = document.createElement('li');
+            li.textContent = itemName;
+            itemList.appendChild(li);
+            itemInput.value = ''; // Clear input
+            itemSelect.value = ''; // Reset select
+            updateSalesSummary();
+        } else {
+            alert('Please select or enter a valid item.');
+        }
+    }
+
+    // Function to finalize the sale
+    function finalizeSale() {
+        const amountReceived = parseFloat(amountReceivedInput.value);
+        const total = parseFloat(totalElement.textContent);
+        if (!isNaN(amountReceived) && amountReceived >= total) {
+            const change = amountReceived - total;
+            changeElement.textContent = change.toFixed(2);
+            alert('Sale finalized! Change to return: $' + change.toFixed(2));
+            // Reset everything for a new sale
+            items = [];
+            itemList.innerHTML = '';
+            subtotalElement.textContent = '0.00';
+            taxElement.textContent = '0.00';
+            discountElement.textContent = '0.00';
+            totalElement.textContent = '0.00';
+            changeElement.textContent = '0.00';
+            amountReceivedInput.value = '';
+        } else {
+            alert('Please enter a valid amount received that covers the total.');
+        }
+    }
+
+    // Event Listeners
+    addItemBtn.addEventListener('click', addItem);
+    finalizeSaleBtn.addEventListener('click', finalizeSale);
+
+    // Optional: Allow pressing Enter to add item
+    itemInput.addEventListener('keypress', (event) => {
+        if (event.key === 'Enter') {
+            addItem();
+        }
+    });
+});
+    </script>

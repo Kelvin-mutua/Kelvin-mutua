@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Reports</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Sales Reports</h1>
+
+
+
+<h2>Generate Reports</h2>
+<button onclick="generateAfterSaleReceipt()">After Sale Report</button>
+<button onclick="generateDailyReport()">Daily Report</button>
+<button onclick="generateMonthlyReport()">Monthly Report</button>
+<button onclick="generateSummaryReport()">Sales Summary Report</button>
+
+<h2>Reports</h2>
+<div id="reportOutput"></div>
+
+<script>
+    
+// Function to retrieve sales data from local storage
+    function getSalesData() {
+        return JSON.parse(localStorage.getItem('salesData')) || [];
+    }
+function generateDailyReport() {
+        const today = new Date().toISOString().split('T')[0];
+        const AfterSale = getSalesData().filter(sale => sale.date === today);
+        displayReport(AfterSale, 'AfterSale Report');
+    }
+    function generateDailyReport() {
+        const today = new Date().toISOString().split('T')[0];
+        const dailySales = getSalesData().filter(sale => sale.date === today);
+        displayReport(dailySales, 'Daily Report');
+    }
+
+    function generateMonthlyReport() {
+        const month = new Date().toISOString().split('T')[0].slice(0, 7);
+        const monthlySales = getSalesData().filter(sale => sale.date.startsWith(month));
+        displayReport(monthlySales, 'Monthly Report');
+    }
+
+    function generateSummaryReport() {
+        displayReport(getSalesData(), 'Sales Summary Report');
+    }
+
+    function displayReport(sales, reportTitle) {
+        const reportOutput = document.getElementById('reportOutput');
+        reportOutput.innerHTML = `<h3>${reportTitle}</h3>`;
+
+        if (sales.length === 0) {
+            reportOutput.innerHTML += '<p>No sales data available.</p>';
+            return;
+        }
+
+        let totalSales = 0;
+        let reportTable = '<table><tr><th>Items Sold</th><th>Total Amount</th><th>Date</th></tr>';
+        sales.forEach(sale => {
+            const itemsList = sale.items.join(', ');
+            reportTable += `<tr><td>${itemsList}</td><td>$${sale.total.toFixed(2)}</td><td>${sale.date}</td></tr>`;
+            totalSales += sale.total;
+        });
+        reportTable += '</table>';
+        reportOutput.innerHTML += reportTable;
+        reportOutput.innerHTML += `<p><strong>Total Sales: $${totalSales.toFixed(2)}</strong></p>`;
+    }
+</script>
+
+</body>
+</html>

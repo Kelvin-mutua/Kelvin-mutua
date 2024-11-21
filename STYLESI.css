@@ -1,0 +1,12 @@
+.back-button {
+    margin-top: 20px; 
+}
+
+.back-button button {
+    background-color: #dc3545; 
+
+}
+
+.back-button button:hover {
+    background-color: #c82333; 
+}

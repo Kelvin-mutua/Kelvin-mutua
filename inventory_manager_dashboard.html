@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management - POS System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+        }
+        nav {
+            background-color: #007bff;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            margin: 0 10px;
+            border-radius: 5px;
+        }
+        nav a:hover {
+            background-color: #0056b3;
+        }
+        .content {
+            display: none;
+        }
+        .active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Inventory Management System</h2>
+        <nav>
+            <a href="#" onclick="showSection('manage-products')">Manage Products</a>
+            <a href="#" onclick="showSection('inventory_management page.html')">Track Inventory</a>
+            <a href="#" onclick="showSection('reporting-analytics')">Reporting & Analytics</a>
+            <a href="#" onclick="showSection('reorder-management')">Reorder Management</a>
+            <a href="#" onclick="showSection('Support.html')">Help & Support</a>
+        </nav>
+
+        <div id="manage-products" class="content active">
+            <h3>Manage Products</h3>
+            <p>Here you can add, edit, or delete products.</p>
+            <!-- Add Product Form -->
+            <form id="productForm" onsubmit="return addProduct()">
+                <input type="text" id="productName" placeholder="Product Name" required>
+                <input type="text" id="productSKU" placeholder="SKU" required>
+                <input type="number" id="productQuantity" placeholder="Quantity" required>
+                <input type="number" id="productPrice" placeholder="Price" step="0.01" required>
+                <button type="submit">Add Product</button>
+            </form>
+            <div id="productList"></div>
+        </div>
+
+        <div id="track-inventory" class="content">
+            <h3>Track Inventory</h3>
+            <p>Monitor stock levels and manage inventory.</p>
+            <!-- Inventory Tracking Table -->
+            <table id="inventoryTable" border="1">
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>SKU</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                </tbody>
+            </table>
+        </div>
+
+        <div id="reporting-analytics" class="content">
+            <h3>Reporting & Analytics</h3>
+            <p>Generate reports and analyze sales data.</p>
+            <!-- Reporting content goes here -->
+        </div>
+
+        <div id="reorder-management" class="content">
+            <h3>Reorder Management</h3>
+            <p>Manage reorder levels and generate purchase orders.</p>
+            <!-- Reorder management content goes here -->
+        </div>
+
+        <div id="help-support" class="content">
+            <h3>Help & Support</h3>
+            <p>Find help and support resources.</p>
+            <!-- Help content goes here -->
+        </div>
+    </div>
+
+    
+        <script>
+    const productListElement = document.getElementById('productList');
+    const inventoryTableBody = document.querySelector('#inventoryTable tbody');
+
+    async function addProduct() {
+        const productName = document.getElementById("productName").value;
+        const productSKU = document.getElementById("productSKU").value;
+        const productQuantity = parseInt(document.getElementById("productQuantity").value);
+        const productPrice = parseFloat(document.getElementById("productPrice").value);
+
+        const product = {
+            name: productName,
+            sku: productSKU,
+            quantity: productQuantity,
+            price: productPrice
+        };
+
+        
+        await fetch('/api/products', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(product)
+        });
+
+       
+        document.getElementById("productForm").reset();
+
+        // Refresh product list
+        loadProducts();
+        return false; 
+    }
+
+    async function loadProducts() {
+        const response = await fetch('/api/products');
+        const products = await response.json();
+        productListElement.innerHTML = '';
+        inventoryTableBody.innerHTML = '';
+
+        products.forEach(product => {
+            productListElement.innerHTML += `<div>${product.name} (SKU: ${product.sku}, Quantity: ${product.quantity}, Price: $${product.price.toFixed(2)})</div>`;
+            inventoryTableBody.innerHTML += `
+                <tr>
+                    <td>${product.name}</td>
+                    <td>${product.sku}</td>
+                    <td>${product.quantity}</td>
+                    <td>$${product.price.toFixed(2)}</td>
+                </tr>
+            `;
+        });
+    }
+
+    
+    window.onload = loadProducts;
+</script>
+           
